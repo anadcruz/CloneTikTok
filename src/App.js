@@ -1,33 +1,47 @@
-
-import './App.css';
-import Video from './pages/Video';
+import React, { useEffect, useState } from "react";
+import "./App.css";
+import Video from "./pages/Video";
+import db from "./config/firebase";
+import { collection, getDocs } from "firebase/firestore/lite";
 
 function App() {
+  let maxHeight;
+  if (window.innerHeight <= 800) {
+
+    maxHeight = window.innerHeight; // 
+  }
+
+  const [video, setVideos] = useState([]);
+
+  async function getVideos() {
+
+    const videosCollection = collection(db, "videos");
+    const videosSnapshot = await getDocs(videosCollection);
+    const videosList = videosSnapshot.docs.map((doc) => doc.data());
+    setVideos(videosList);
+  }
+
+  useEffect(() => {
+
+    getVideos();
+  }, []);
+
   return (
-    <div className="App">
-      <div className='app__videos'>
-
-        <Video
-          likes={1111}
-          messages={222}
-          shares={333}
-          name="anadcruz"
-          description="Pulo do gato"
-          music="música épica"
-          url="https://firebasestorage.googleapis.com/v0/b/jornada-dev.appspot.com/o/brecker2.mp4?alt=media&token=d1a44acd-bef3-4b18-bafe-92fa0b26828a"
-
-        />
-        <Video
-          likes={2234}
-          messages={122}
-          shares={323}
-          name="clara"
-          description="Maya staring"
-          music="Clap your hands"
-          url="https://poqlymuephttfsljdabn.supabase.co/storage/v1/object/public/jornadadev/bird.mp4"
-        />
-
-
+    <div className="App" style={{ maxHeight: maxHeight + "px" }}>
+      <div className="app__videos">
+        {video.map((item) => {
+          return (
+            <Video
+              likes={item.likes}
+              messages={item.messages}
+              shares={item.shares}
+              name={item.name}
+              description='Maya staring'
+              music={item.music}
+              url={item.url}
+            />
+          );
+        })}
       </div>
     </div>
   );
