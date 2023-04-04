@@ -8,7 +8,7 @@ function App() {
   let maxHeight;
   if (window.innerHeight <= 800) {
 
-    maxHeight = window.innerHeight; // 
+    maxHeight = window.innerHeight;
   }
 
   const [video, setVideos] = useState([]);
@@ -36,7 +36,7 @@ function App() {
               messages={item.messages}
               shares={item.shares}
               name={item.name}
-              description='Maya staring'
+              description='memes'
               music={item.music}
               url={item.url}
             />
